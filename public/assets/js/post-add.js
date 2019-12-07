@@ -49,8 +49,6 @@ function getId(id){
     }
     return -1
 }
-console.log(getId('id'));
-
 $.ajax({
     type:'get',
     url:'/posts/'+ getId('id'),
