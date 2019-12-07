@@ -27,7 +27,7 @@ $('#feature').on('change',function(){
     })   
 })
 
-$('#article').on('submit',function(){
+$('#addForm').on('submit',function(){
     let formData = $(this).serialize();
     $.ajax({
         type:'post',
@@ -49,11 +49,32 @@ function getId(id){
     }
     return -1
 }
-getId("id")
+console.log(getId('id'));
+
 $.ajax({
     type:'get',
-    url:'posts'+id,
+    url:'/posts/'+ getId('id'),
     success:function(data){
-        
+        $.ajax({
+            type:'get',
+            url:'/categories',
+            success:function(categories){
+                data.categories = categories;
+                let html = template('tpl-form',data);
+                $('#fatherBox').html(html)
+            }
+        });       
     }
-})
+});
+$('#fatherBox').on('submit','#mod-form',function(){
+    let formData = $(this).serialize();
+    $.ajax({
+        type:'put',
+        url:'/posts/' + getId('id'),
+        data:formData,
+        success:function(data){
+            location.href='/admin/posts.html'       
+        }
+    })
+    return false;
+});

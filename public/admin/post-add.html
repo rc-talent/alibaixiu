@@ -20,7 +20,7 @@
         <li><a href="login.html"><i class="fa fa-sign-out"></i>退出</a></li>
       </ul>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid" id="fatherBox">
       <div class="page-title">
         <h1>写文章</h1>
       </div>
@@ -28,7 +28,7 @@
       <!-- <div class="alert alert-danger">
         <strong>错误！</strong>发生XXX错误
       </div> -->
-      <form class="row" id="article">
+      <form class="row" id="addForm">
         <div class="col-md-9">
           <div class="form-group">
             <label for="title">标题</label>
@@ -55,7 +55,7 @@
           </div>
           <div class="form-group">
             <label for="created">发布时间</label>
-            <input id="created" class="form-control" name="createAt" type="datetime-local">
+            <input id="created" class="form-control" name="createAt" type="date">
           </div>
           <div class="form-group">
             <label for="status">状态</label>
@@ -112,6 +112,54 @@
     {{each data}}
       <option value="{{$value._id}}">{{$value.title}}</option>
     {{/each}}
+  </script>
+  <script type="text/html" id="tpl-form">
+    <div class="page-title">
+        <h1>编辑文章</h1>
+    </div>
+    <form class="row" id="mod-form">
+        <div class="col-md-9">
+          <div class="form-group">
+            <label for="title">标题</label>
+            <input id="title" value="{{title}}" class="form-control input-lg" name="title" type="text" placeholder="文章标题">
+          </div>
+          <div class="form-group">
+            <label for="content">标题</label>
+            <textarea id="content" class="form-control input-lg" name="content" cols="30" rows="10" placeholder="内容">{{content}}</textarea>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="feature">特色图像</label>
+            <!-- show when image chose -->
+            <img class="help-block thumbnail" style="display: none">
+            <input id="feature" class="form-control"type="file">
+            <input type="hidden" value="{{thumbnail}}" name="thumbnail" id="hiddenAvatar">
+          </div>
+          <div class="form-group">
+            <label for="category">所属分类</label>
+            <select id="category" class="form-control" name="category">
+              {{each categories}}
+                <option value="{{$value._id}}" {{category == $value._id ? 'selected':''}}>{{$value.title}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="created">发布时间</label>
+            <input id="created" value="{{createAt.split('T')[0]}}" class="form-control" name="createAt" type="date">
+          </div>
+          <div class="form-group">
+            <label for="status">状态</label>
+            <select id="status" class="form-control" name="state">
+              <option value="0" {{state == 0 ? 'selected' : ''}}>草稿</option>
+              <option value="1" {{state == 1 ? 'selected' : ''}}>已发布</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary" type="submit">保存</button>
+          </div>
+        </div>
+      </form>  
   </script>
   
   <script src="../assets/vendors/jquery/jquery.js"></script>

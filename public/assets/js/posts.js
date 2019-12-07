@@ -10,11 +10,21 @@ $.ajax({
         $('#pages').html(page)
     }
 });
-function changePage(page){
+
+$('#pages').on('click','a',function(){
+    let formData = serializeobj($('#classSelect'));
+    let page= $(this).attr("data-id");
+    formData['page'] = page;
+    if(!formData.state){
+        delete formData.state
+    }
+    if(!formData.category){
+        delete formData.category
+    }
     $.ajax({
         type: 'get',
         url: '/posts',
-        data:{page:page},
+        data:formData,
         success: function (data) {
             let html = template('tpl-posts',data)
             $('#postsTbody').html(html)
@@ -22,7 +32,7 @@ function changePage(page){
             $('#pages').html(page)
         }
     });
-}
+})
 $.ajax({
     type:'get',
     url:'/categories',
@@ -41,7 +51,6 @@ function serializeobj(form) {
 };
 $('#classSelect').on('submit',function(){
     let formData = serializeobj($(this))
-
     if(!formData.state){
         delete formData.state
     }
@@ -60,7 +69,6 @@ $('#classSelect').on('submit',function(){
             $('#pages').html(page)
         }
     })
-    
 
     return false;
 })
